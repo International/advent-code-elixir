@@ -1,26 +1,30 @@
 defmodule Santa do
-  def floor_number(?(, [h|t]) do
-    1 + floor_number(h, t)
+  defp floor_number(acc, ?(, [h|t]) do
+    floor_number(acc + 1, h, t)
   end
 
-  def floor_number(?(, []) do
-    1
+  defp floor_number(acc, ?(, []) do
+    acc + 1
   end
 
-  def floor_number(?), []) do
-    -1
+  defp floor_number(acc, ?), []) do
+    acc - 1
   end
 
-  def floor_number(?), [h|t]) do
-    floor_number(h, t) - 1
+  defp floor_number(acc, ?), [h|t]) do
+    floor_number(acc - 1, h, t)
   end
 
-  def floor_number(_, []) do
-    0
+  defp floor_number(acc, _, []) do
+    acc
   end
 
   def floor_number([h | t]) do
-    floor_number(h, t)
+    floor_number(0, h, t)
+  end
+
+  def basement_position([h | t]) do
+
   end
 
 end
