@@ -2,20 +2,8 @@ defmodule Challenge_2Test do
   use ExUnit.Case
   doctest WrappingPaper
 
-  test "A present with dimensions 2x3x4 requires 2*6 + 2*12 + 2*8 = 52 square feet of wrapping paper plus 6 square feet of slack, for a total of 58 square feet." do
-    assert WrappingPaper.needed(2,3,4) == 58
-  end
-
-  test "A present with dimensions 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of wrapping paper plus 1 square foot of slack, for a total of 43 square feet" do
-    assert WrappingPaper.needed(1,1,10) == 43
-  end
-
-  test "it accepts a map" do
-    assert WrappingPaper.needed(%{l: 1,w: 1,h: 10}) == 43
-  end
-
-  test "challenge input" do
-    input="""
+  def challenge_input do
+    """
 20x3x11
 15x27x5
 6x29x7
@@ -1017,9 +1005,49 @@ defmodule Challenge_2Test do
 21x2x22
 14x12x8
     """
-    parsed = PackageParser.parse(input)
-    assert Enum.reduce(parsed, 0, fn(pkg, acc) ->
+  end
+
+  def parsed_packages do
+    PackageParser.parse(challenge_input)
+  end
+
+  test "A present with dimensions 2x3x4 requires 2*6 + 2*12 + 2*8 = 52 square feet of wrapping paper plus 6 square feet of slack, for a total of 58 square feet." do
+    assert WrappingPaper.needed(2,3,4) == 58
+  end
+
+  test "A present with dimensions 1x1x10 requires 2*1 + 2*10 + 2*10 = 42 square feet of wrapping paper plus 1 square foot of slack, for a total of 43 square feet" do
+    assert WrappingPaper.needed(1,1,10) == 43
+  end
+
+  test "it accepts a map" do
+    assert WrappingPaper.needed(%{l: 1,w: 1,h: 10}) == 43
+  end
+
+  test "challenge input #1" do
+    assert Enum.reduce(parsed_packages, 0, fn(pkg, acc) ->
       acc + WrappingPaper.needed(pkg)
     end) == 1606483
   end
+
+  test "bow challenge #2" do
+    assert Enum.reduce(parsed_packages, 0, fn(pkg, acc) ->
+      acc + WrappingPaper.bow(pkg) + WrappingPaper.ribbon(pkg)
+    end) == 3842356
+  end
+
+  test "calculates ribbon correctly for 2,3,4" do
+    assert WrappingPaper.ribbon(2,3,4) == 10
+  end
+
+  test "calculates bow correctly for 2,3,4" do
+    assert WrappingPaper.bow(2, 3, 4) == 24
+  end
+
+  test "calculates ribbon correctly for 1, 1, 10" do
+    assert WrappingPaper.ribbon(1, 1, 10) == 4
+  end
+
+  test "calculates bow correctly for 2,3,4" do
+    assert WrappingPaper.bow(1, 1, 10) == 10
+  end  
 end
