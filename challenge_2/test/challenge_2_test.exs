@@ -1017,5 +1017,9 @@ defmodule Challenge_2Test do
 21x2x22
 14x12x8
     """
+    parsed = PackageParser.parse(input)
+    assert Enum.reduce(parsed, 0, fn(pkg, acc) ->
+      acc + WrappingPaper.needed(pkg)
+    end) == 1606483
   end
 end
